@@ -34,7 +34,7 @@ next();
 //multer storage
 const storage=multer.diskStorage({
   destination:(req,file,cb)=>{
-    cb(null,"public/images")//it says about the image where it storing
+    cb(null,"Public/images")//it says about the image where it storing
   },
   //identifying each pic by uploaded date
   filename:(req,file,cb)=>{
@@ -55,7 +55,7 @@ const fileFilter = (req, file, cb) => {
 app.use(multer({
   storage:storage,fileFilter}).fields([{name:'imagee',maxCount:6},{name:'BImage'}]))
 app.use(logger('dev'));
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,'Public')));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
