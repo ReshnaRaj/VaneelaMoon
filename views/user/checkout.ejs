@@ -105,7 +105,7 @@
                 <h5 class="text-secondary border-bottom py-2 mb-2">Saved Addresses</h5>
                 <% if(userdetails.address.length==0){ %>
                   <h3 class="text-dark text-center">No Address Avaliable</h3>
-                  <p class="text-muted text-center"> Add new address</p>
+                  <!-- <p class="text-muted text-center"> Add new address</p> -->
                   <% }else{ %>
                     <% userdetails.address.forEach((val,i)=>{ %>
                       <div>
@@ -155,8 +155,8 @@
               </div>
 
             
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="enter your coupon" name="coupon"
+            <div class="input-group" style="width: 60%;">
+              <input type="text" class="form-control" placeholder="enter your coupon" name="coupon" style="margin-left: 1px;margin-right: 2px;"
                 fdprocessedid="x6xu1g" id="coupon">
               <div class="input-group-append">
                 <!-- <input type="hidden" id="orderid" value=""> -->
@@ -191,7 +191,7 @@
                     <% orderdetails.productt.forEach((val)=>{ %>
 
                       <li><span>
-                          <%=val.name%> x <%=val.qnty%>
+                          <%=val.name%>x<%=val.qnty%>
                         </span><span>
                           <%=val.price %>
                         </span></li>
