@@ -151,6 +151,7 @@
                                   <%= val.price %>
                                 </span></p>
                             </td>
+                            
                             <!-- < % if(orderDetails.delivery_status.delivered.state==true){ %>
                             <td class="p-3 align-middle border-light">
                               <button type="button " class="badge " data-bs-toggle="modal" data-bs-target="#exampleModalre" onclick="review()">
@@ -170,10 +171,18 @@
 
 
                   </div>
+                  
                    <%  if(orderDetails.delivery_status.canceled.state==true){ %>
+                    
 
 
                   <h5 class="text-danger text-center border border-danger">canceled</h5>
+                  <% }else if(orderDetails.delivery_status.delivered.state==true){ %>
+                    <div id="return" class="text-end me-3">
+                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                      ReturnOrder
+                    </button>
+                    </div>
 
                   <% }else if(orderDetails.delivery_status.delivered.state==false){ %>
                   <div id="cancel" class="text-end me-3">
@@ -183,8 +192,11 @@
                     </button>
                   </div>
                   
-                  <!-- <h5 class="text-success text-center border border-success">Order delivered</h5> -->
+                  
+                  
+                 
                   <% } %>
+
 
                   <!-- Modal -->
                   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -201,9 +213,32 @@
                           <button type="button" class="btn btn-success" data-bs-dismiss="modal">NO</button>
                           <button type="button" class="btn btn-danger" onclick="cancelOrder('<%=orderDetails._id%>')">Yes</button>
                         </div>
+                        
+
                       </div>
                     </div>
                   </div>
+                  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabelreturn">Return order</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure want to return this order
+                        </div>
+                        <div class="modal-footer">`
+                          <button type="button" class="btn btn-success" data-bs-dismiss="modal">NO</button>
+                          <button type="button" class="btn btn-danger" onclick="ReturnOrder('<%=orderDetails._id%>')">Yes</button>
+                        </div>
+                        
+
+                      </div>
+                    </div>
+                  </div>
+
+                  
 
                 </div>
               </div>
@@ -215,45 +250,28 @@
   </div>
 
   <!-- review Modal -->
-  <div class="modal fade" id="exampleModalre" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <!-- <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Product Review</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div> -->
-        <!-- <div class="modal-body">
-          <div class="modal-body mx-2" style="width:350px;">
-            <form method="post" id="star">
 
-              <label for="" class="text-dark mb-3 fw-bold">Rate the product</label>
-              <input class="star star-5" id="star-5" type="radio" name="star" value="5" />
-              <label class="star star-5" for="star-5"></label>
-              <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
-              <label class="star star-4" for="star-4"></label>
-              <input class="star star-3" id="star-3" type="radio" name="star" value="3" />
-              <label class="star star-3" for="star-3"></label>
-              <input class="star star-2" id="star-2" type="radio" name="star" value="2" />
-              <label class="star star-2" for="star-2"></label>
-              <input class="star star-1" id="star-1" type="radio" name="star" value="1" />
-              <label class="star star-1" for="star-1"></label><br>
-              <label class=""> Title </label>
-              <input type="text" name="title" class="form-control" required>
-              <label for="reviewId">Write your review</label><br>
-              <textarea name="review" class="form-control" id="reviewId" cols="30" rows="4" required></textarea>
-              <input type="hidden" value="" name="orderId">
-          </div>
-
-        </div> -->
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success">Submit</button>
-        </div> -->
-        </form>
-      </div>
-    </div>
-  </div>
   <%-include('../user/layout/userfooter.ejs')  %> 
+  <script>
+    function ReturnOrder(id) {
+    $.ajax({
+      type: "POST",
+      url: "/returnOrder",
+      data: {
+        id,
+      },
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      if (data == "Orderreturn") {
+        Swal.fire("returned!", "This Order has been returned.", "success");
+        resHTML =
+          '<h5 class="text-success text-center border border-success">Order Returned</h5>';
+        $("#return").html(resHTML);
+      }
+    });
+  }
+  </script>
 <script>
   function cancelOrder(id) {
   $.ajax({

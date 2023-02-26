@@ -676,14 +676,16 @@ module.exports = {
             if (data) {
               if (data.expiryDate >= new Date()) {
                 orderModel.findOne({
-                  _id: req.body.id,
+                
+                  _id: mongoose.Types.ObjectId(req.body.id.trim()),
                   userid: req.session.user._id,
                   order_status: "pending",
                 })
                   .then((orderdetails) => {
+                    console.log(orderdetails,"oooooooooooo");
                     if (orderdetails.bill_amount > data.minimumAmount) {
                       orderModel.updateOne({
-                        _id: req.body.id,
+                        _id:mongoose.Types.ObjectId(req.body.id.trim()),
                         userid: req.session.user._id,
                         order_status: "pending",
                       },
@@ -890,6 +892,24 @@ module.exports = {
         });
     } catch (error) {
       next(error);
+    }
+  },
+  ReturnOrder:(req,res,next)=>{
+    try {
+      console.log('return order working..')
+      console.log(req.body.id,"id working...");
+      orderModel.updateOne({_id:req.body.id},
+        {$set:{order_status:'returned',
+        "delivery_status.returned.state": true,
+        "delivery_status.returned.date": Date.now(),
+
+      },}).then(()=>{
+        res.json('Orderreturn')
+      });
+      
+    } catch (error) {
+      next(error);
+      
     }
   },
 
